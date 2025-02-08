@@ -25,6 +25,7 @@ int gPlayerLevel = 1;
 int gPlayerExperience = 0;
 int gPlayerAttackPower = 10;
 int gPlayerDefencePower = 10;
+int gTutorialProgress = -1;
 
 
 // key terms
@@ -36,6 +37,7 @@ const int SAVE_LEVEL_KEY = 4;
 const int SAVE_EXPERIENCE_KEY = 5;
 const int SAVE_ATTACK_POWER_KEY = 6;
 const int SAVE_DEFENCE_POWER_KEY = 7;
+const int SAVE_TUTORIAL_PROGRESS_KEY = 8;
 
 int main() 
 {
@@ -48,12 +50,14 @@ int main()
 		{
 			cout << "Enter your character's name: ";
 			std::getline(cin, gPlayerName);
-			if (gPlayerName.size() > 12) {
+			if (gPlayerName.size() > 12)
+			{
 				cout << "You cannot enter a name that exceeds 12 characters.";
 			}
 			else
 			{
-				if (!HasInvalidSpaces(gPlayerName)) {
+				if (!HasInvalidSpaces(gPlayerName))
+				{
 					EnteredValidName = true;
 				}
 			}
@@ -85,6 +89,7 @@ void SavePlayerData()
 		SaveFile << SAVE_EXPERIENCE_KEY << ": " << gPlayerExperience << endl;
 		SaveFile << SAVE_ATTACK_POWER_KEY << ": " << gPlayerAttackPower << endl;
 		SaveFile << SAVE_DEFENCE_POWER_KEY << ": " << gPlayerDefencePower << endl;
+		SaveFile << SAVE_TUTORIAL_PROGRESS_KEY << ": " << gTutorialProgress << endl;
 		SaveFile.close();
 
 		PrintPlayerData();
@@ -162,6 +167,11 @@ bool ReadPlayerData()
 					gPlayerDefencePower = std::stoi(value);
 					break;
 				}
+				case SAVE_TUTORIAL_PROGRESS_KEY:
+				{
+					gTutorialProgress = std::stoi(value);
+					break;
+				}
 				default:
 				{
 					cout << "-Unknown key placed: " << key << endl;
@@ -189,13 +199,15 @@ void PrintPlayerData()
 
 bool HasInvalidSpaces(std::string EnteredString)
 {
-	if (EnteredString.find('\n') == 0 || EnteredString.find(' ') == 0) {
+	if (EnteredString.find('\n') == 0 || EnteredString.find(' ') == 0)
+	{
 		cout << "You cannot start a name with a space." << endl << endl;
 		return true;
 	}
 	for (char Letter : EnteredString)
 	{
-		if (Letter == '\n' || Letter == ' ' || Letter == '\\' || Letter == '/') {
+		if (Letter == '\n' || Letter == ' ' || Letter == '\\' || Letter == '/')
+		{
 			cout << "You cannot enter more than one space or invalid characters such as \\ or /." << endl << endl;
 			return true;
 		}
