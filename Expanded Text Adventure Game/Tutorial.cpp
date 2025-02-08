@@ -7,6 +7,8 @@ using std::cout;
 using std::cin;
 
 const std::string Tutorial::SAVE_FILE = "Tutorial.txt";  // Definition of the static member.
+const std::string Tutorial::NARRATOR_TAG = "Narrator: ";
+const std::string Tutorial::SYSTEM_TAG = "System: ";
 
 Tutorial::Tutorial()
 {
@@ -22,58 +24,96 @@ Tutorial::~Tutorial()
 
 }
 
-void Tutorial::PlayTutorial(std::string PlayerName)
+void Tutorial::PlayTutorial(std::string GameTitle, std::string PlayerName)
 {
 	if (TutorialProgress == -1)
 	{
-		cout << endl << "Please ensure you pay very close to the tutorial, " << PlayerName << "!" << endl << endl;
+		cout << endl << SYSTEM_TAG << "Please ensure you pay very close to the tutorial, " << PlayerName << "!" << endl << endl;
 		TutorialProgress = TUTORIAL_PROGRESS_WELCOME_MESSAGE;
 	}
 	switch (TutorialProgress)
 	{
 		case TUTORIAL_PROGRESS_WELCOME_MESSAGE:
 		{
+			cout << endl << SYSTEM_TAG << "---Welcome, to " << GameTitle << "---" << endl << endl;
+
 			for (std::string phrase : WELCOME_MESSAGE)
 			{
-				cout << phrase << endl;
+				cout << NARRATOR_TAG << phrase << endl;
+				PressEnterToContinue(false);
 			}
-			cout << endl << "Next, you will learn about the menus!" << endl << endl;
 			IncrementTutorialProgress();
-			PlayTutorial(PlayerName);
+			PlayTutorial(GameTitle, PlayerName);
 			break;
 		}
 
 		case TUTORIAL_PROGRESS_MENU:
 		{
+			cout << endl << SYSTEM_TAG << "---INGAME MENU INFORMATION---" << endl << endl;
+
+			for (std::string phrase : IN_GAME_MENU)
+			{
+				cout << NARRATOR_TAG << phrase << endl;
+				PressEnterToContinue(false);
+			}
 			IncrementTutorialProgress();
-			PlayTutorial(PlayerName);
+			PlayTutorial(GameTitle, PlayerName);
 			break;
 		}
 
 		case TUTORIAL_PROGRESS_COMBAT:
 		{
+			cout << endl << SYSTEM_TAG << "---COMBAT MENU INFORMATION---" << endl << endl;
+
+			for (std::string phrase : COMBAT_MENU)
+			{
+				cout << NARRATOR_TAG << phrase << endl;
+				PressEnterToContinue(false);
+			}
 			IncrementTutorialProgress();
-			PlayTutorial(PlayerName);
+			PlayTutorial(GameTitle, PlayerName);
 			break;
 		}
 
 		case TUTORIAL_PROGRESS_EXPLORATION:
 		{
+			cout << endl << SYSTEM_TAG << "---EXPLORATION MENU INFORMATION---" << endl << endl;
+
+			for (std::string phrase : EXPLORATION_MENU)
+			{
+				cout << NARRATOR_TAG << phrase << endl;
+				PressEnterToContinue(false);
+			}
 			IncrementTutorialProgress();
-			PlayTutorial(PlayerName);
+			PlayTutorial(GameTitle, PlayerName);
 			break;
 		}
 
-		case TUTORIAL_PROGRESS_NPCS:
+		case TUTORIAL_PROGRESS_SKILLS:
 		{
+			cout << endl << SYSTEM_TAG << "---SKILLS INFORMATION---" << endl << endl;
+
+			for (std::string phrase : SKILLS_TUTORIAL)
+			{
+				cout << NARRATOR_TAG << phrase << endl;
+				PressEnterToContinue(false);
+			}
 			IncrementTutorialProgress();
-			PlayTutorial(PlayerName);
+			PlayTutorial(GameTitle, PlayerName);
 			break;
 		}
 
 		case TUTORIAL_PROGRESS_COMPLETE:
 		{
+			cout << endl << SYSTEM_TAG << "---CLOSING DETAILS---" << endl << endl;
+
+			for (std::string phrase : COMPLETE_TUTORIAL)
+			{
+				cout << NARRATOR_TAG << phrase << endl;
+				PressEnterToContinue(false);
+			}
 			IncrementTutorialProgress();
+			SaveTutorialFile();
 			break;
 		}
 	}
@@ -115,13 +155,15 @@ bool Tutorial::GetHasCompletedTutorial()
 void Tutorial::IncrementTutorialProgress()
 {
 	TutorialProgress++;
-	PressEnterToContinue();
+	PressEnterToContinue(true);
 	//SaveTutorialFile();
 }
 
-void Tutorial::PressEnterToContinue()
+void Tutorial::PressEnterToContinue(bool SendMessage)
 {
-	cout << "Press Enter to continue...";
-	cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clears input buffer
+	if (SendMessage)
+	{
+		cout << "Press Enter to continue..." << endl << endl;
+	}
 	cin.get(); // Waits for Enter
 }

@@ -11,7 +11,8 @@ using std::string;
 
 // Forward Declarations
 
-const string SavePath = "PlayerSave.txt";
+const string PLAYER_SAVE_PATH = "PlayerSave.txt";
+const string GAME_TITLE = "Requiem of the Reborn Assassin";
 
 void SavePlayerData();
 bool ReadPlayerData();
@@ -80,7 +81,13 @@ int main()
 
 	if (!gCompletedTutorial)
 	{
-		TutorialClass.PlayTutorial(gPlayerName);
+		TutorialClass.PlayTutorial(GAME_TITLE, gPlayerName);
+		gCompletedTutorial = TutorialClass.GetHasCompletedTutorial();
+	}
+	if (gCompletedTutorial)
+	{
+		// check first quest distribution
+		cout << "Tutorial completed...";
 	}
 	while (IsRunning) 
 	{
@@ -92,7 +99,7 @@ int main()
 
 void SavePlayerData() 
 {
-	std::ofstream SaveFile(SavePath);
+	std::ofstream SaveFile(PLAYER_SAVE_PATH);
 
 	if (SaveFile.is_open()) 
 	{
@@ -118,7 +125,7 @@ void SavePlayerData()
 
 bool ReadPlayerData() 
 {
-	std::ifstream SaveFile(SavePath);
+	std::ifstream SaveFile(PLAYER_SAVE_PATH);
 
 	if (!SaveFile.is_open()) 
 	{
