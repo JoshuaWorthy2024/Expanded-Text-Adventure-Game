@@ -8,10 +8,6 @@ using std::cin;
 
 const std::string Tutorial::SAVE_FILE = "Tutorial.txt";  // Definition of the static member.
 
-const int WELCOME_MESSAGE_LENGTH = 3;
-const std::string Tutorial::WELCOME_MESSAGE[] = { "Greetings, adventurer! We're excited to guide you through the basics of your journey.",
-"In this tutorial, you'll learn how to navigate the game, engage in combat, explore the world, and meet important characters.", "Follow the instructions carefully to make sure you're fully prepared for your adventure!" };
-
 Tutorial::Tutorial()
 {
 	TutorialProgress = -1;
