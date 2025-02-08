@@ -1,11 +1,15 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include "Tutorial.h"
 
 using std::cout;
 using std::cin;
 using std::endl;
 using std::string;
+
+
+// Forward Declarations
 
 const string SavePath = "PlayerSave.txt";
 
@@ -25,7 +29,7 @@ int gPlayerLevel = 1;
 int gPlayerExperience = 0;
 int gPlayerAttackPower = 10;
 int gPlayerDefencePower = 10;
-int gTutorialProgress = -1;
+bool gCompletedTutorial = false;
 
 
 // key terms
@@ -41,6 +45,7 @@ const int SAVE_TUTORIAL_PROGRESS_KEY = 8;
 
 int main() 
 {
+	system("mode con: cols=240 lines=60");
 	if (!ReadPlayerData())
 	{
 		bool EnteredValidName = false;
@@ -67,6 +72,16 @@ int main()
 		SavePlayerData();
 	}
 	
+	// Tutorial Section
+	Tutorial TutorialClass;
+	gCompletedTutorial = TutorialClass.GetHasCompletedTutorial();
+
+	SavePlayerData();
+
+	if (!gCompletedTutorial)
+	{
+		TutorialClass.PlayTutorial(gPlayerName);
+	}
 	while (IsRunning) 
 	{
 
@@ -89,7 +104,7 @@ void SavePlayerData()
 		SaveFile << SAVE_EXPERIENCE_KEY << ": " << gPlayerExperience << endl;
 		SaveFile << SAVE_ATTACK_POWER_KEY << ": " << gPlayerAttackPower << endl;
 		SaveFile << SAVE_DEFENCE_POWER_KEY << ": " << gPlayerDefencePower << endl;
-		SaveFile << SAVE_TUTORIAL_PROGRESS_KEY << ": " << gTutorialProgress << endl;
+		SaveFile << SAVE_TUTORIAL_PROGRESS_KEY << ": " << gCompletedTutorial << endl;
 		SaveFile.close();
 
 		PrintPlayerData();
@@ -121,7 +136,7 @@ bool ReadPlayerData()
 			std::getline(SaveFile, line);
 
 			if (!line.empty()) {
-				int position = line.find(':');
+				int position = (int) line.find(':');
 				key = line.substr(0, position);
 				value = line.substr(position + 2);
 
@@ -169,7 +184,7 @@ bool ReadPlayerData()
 				}
 				case SAVE_TUTORIAL_PROGRESS_KEY:
 				{
-					gTutorialProgress = std::stoi(value);
+					gCompletedTutorial = std::stoi(value);
 					break;
 				}
 				default:
@@ -194,7 +209,8 @@ void PrintPlayerData()
 	cout << "Level: " << gPlayerLevel << endl;
 	cout << "Experience: " << gPlayerExperience << endl;
 	cout << "Attack: " << gPlayerAttackPower << endl;
-	cout << "Defense: " << gPlayerDefencePower << endl << endl;
+	cout << "Defense: " << gPlayerDefencePower << endl;
+	cout << "Completed Tutorial: " << gCompletedTutorial << endl << endl;
 }
 
 bool HasInvalidSpaces(std::string EnteredString)
