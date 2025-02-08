@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include "Tutorial.h"
+#include "TestMenu.h"
 
 using std::cout;
 using std::cin;
@@ -32,6 +33,7 @@ int gPlayerAttackPower = 10;
 int gPlayerDefencePower = 10;
 bool gCompletedTutorial = false;
 
+int gEnteredPlayerChoice = -1;
 
 // key terms
 const int SAVE_NAME_KEY = 0;
@@ -84,11 +86,18 @@ int main()
 		TutorialClass.PlayTutorial(GAME_TITLE, gPlayerName);
 		gCompletedTutorial = TutorialClass.GetHasCompletedTutorial();
 	}
+
 	if (gCompletedTutorial)
 	{
 		// check first quest distribution
 		cout << "Tutorial completed...";
 	}
+
+	TestMenu TestMenuClass;
+	TestMenuClass.PrintMenuOptions();
+	gEnteredPlayerChoice = TestMenuClass.GetPlayerEnteredChoice();
+
+	cout << "Player selected: " << gEnteredPlayerChoice; 
 	while (IsRunning) 
 	{
 
